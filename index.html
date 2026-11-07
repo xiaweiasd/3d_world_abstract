@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>An English World</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='6' fill='%23e4a15a'/%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,620;1,9..144,500&family=Outfit:wght@340;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;1,8..60,460&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="scene"></canvas>
+      <div id="labels"></div>
+      <div id="loading">
+        <p class="eyebrow">An English world</p>
+        <h1>Opening the lands</h1>
+        <p id="loading-note">Ten thousand words are taking their places.</p>
+      </div>
+      <header id="title">
+        <p class="eyebrow">Beyond the exam</p>
+        <h1>An English world</h1>
+        <p id="census"></p>
+        <p id="region"></p>
+      </header>
+      <form id="search" role="search">
+        <label class="sr" for="search-input">Search words</label>
+        <input id="search-input" type="search" placeholder="Search a word" autocomplete="off" />
+        <div id="results" hidden></div>
+      </form>
+      <nav id="layers" aria-label="Lands"></nav>
+      <aside id="reader" hidden>
+        <div id="reader-actions">
+          <button id="save-word" type="button" aria-pressed="false">Save</button>
+          <button id="reader-close" type="button">Close</button>
+        </div>
+        <p id="reader-kicker" class="eyebrow"></p>
+        <h2 id="reader-word"></h2>
+        <p id="reader-pos"></p>
+        <p id="reader-gloss"></p>
+        <p id="reader-example" hidden></p>
+        <p id="reader-note" hidden></p>
+        <p id="reader-source"></p>
+      </aside>
+      <aside id="saved" hidden>
+        <div id="saved-bar">
+          <p class="eyebrow">Saved words</p>
+          <button id="saved-close" type="button">Close</button>
+        </div>
+        <p id="saved-empty">No saved words yet. Open a word and choose Save.</p>
+        <ul id="saved-list"></ul>
+        <button id="saved-export" type="button">Export saved words</button>
+      </aside>
+      <div id="tools">
+        <button id="import-button" type="button">Import</button>
+        <button id="sample-button" type="button">Add 3 of mine</button>
+        <button id="download-button" type="button">Download</button>
+        <button id="saved-button" type="button" aria-expanded="false">Saved <span id="saved-count">0</span></button>
+        <button id="restore-button" type="button">Restore test world</button>
+        <input id="import-file" type="file" accept=".json,.csv,application/json,text/csv" hidden />
+        <p id="status" role="status"></p>
+      </div>
+      <div id="pad" aria-label="Move">
+        <button type="button" data-key="q">Rise</button>
+        <button type="button" data-key="w">Forward</button>
+        <button type="button" data-key="e">Fall</button>
+        <button type="button" data-key="a">Left</button>
+        <button type="button" data-key="s">Back</button>
+        <button type="button" data-key="d">Right</button>
+      </div>
+      <p id="help">Drag to look. WASD to move. Q and E rise and fall. Click a word. Import your own.</p>
+      <button id="minimap-wrap" type="button" aria-label="Map of the six lands">
+        <canvas id="minimap" width="180" height="180"></canvas>
+      </button>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

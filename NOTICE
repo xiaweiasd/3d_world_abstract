@@ -1,0 +1,19 @@
+Definitions whose source is "wordnet" come from WordNet, a lexical database of English
+created by Princeton University.
+
+WordNet 3.0 Copyright 2006 by Princeton University. All rights reserved.
+
+Princeton grants permission to use, copy, modify, and distribute the WordNet
+database for any purpose without fee, provided this copyright notice and the
+WordNet disclaimer remain with the data. WordNet is provided "as is", without
+warranty. Princeton University makes no representation of merchantability or
+fitness for a particular purpose. The name of Princeton University may not be
+used to endorse this project. This world is not affiliated with Princeton.
+
+https://wordnet.princeton.edu/
+
+Word order uses the google-10000-english list published by first20hours:
+https://github.com/first20hours/google-10000-english
+
+Closed-class glosses, and the notes marked as sample readings, were written
+for this world. Sample notes are placeholders. Import your own to replace them.
