@@ -57,7 +57,7 @@ html, body, #app {
   clip: rect(0 0 0 0);
 }
 
-#loading, header, #search, #layers, #reader, #tools, #help, #pad, #minimap-wrap {
+#loading, header, #search, #layers, #reader, #saved, #tools, #help, #pad, #minimap-wrap {
   position: fixed;
   z-index: 3;
 }
@@ -216,12 +216,79 @@ header h1 { font-size: 34px; }
   border-top: 1px solid rgba(36, 28, 22, 0.12);
   padding-top: 10px;
 }
-#reader-close {
-  float: right;
+#reader-close, #save-word, #saved-close, #saved-export, #saved-list button {
   color: var(--paper-ink);
   background: transparent;
-  border-color: rgba(36, 28, 22, 0.2);
+  border: 1px solid rgba(36, 28, 22, 0.2);
+  border-radius: 999px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font: 500 14px Outfit, sans-serif;
 }
+
+#reader-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+#save-word {
+  background: #241c16;
+  color: var(--paper);
+  border-color: #241c16;
+}
+
+#save-word[aria-pressed="true"] {
+  background: transparent;
+  color: #241c16;
+}
+
+#saved {
+  top: 168px;
+  left: 22px;
+  width: min(320px, calc(100% - 32px));
+  max-height: calc(100% - 280px);
+  overflow: auto;
+  background: var(--paper);
+  color: var(--paper-ink);
+  border-radius: 22px;
+  padding: 16px 16px 14px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+}
+
+#saved-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+#saved .eyebrow { color: #6d6258; }
+
+#saved-list {
+  list-style: none;
+  margin: 12px 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+#saved-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#saved-list .open-saved {
+  flex: 1;
+  text-align: left;
+  border-radius: 12px;
+}
+
+#saved-empty { margin: 12px 0; font-size: 14px; }
+
+#saved-export { width: 100%; }
 
 #tools {
   left: 22px;
@@ -283,7 +350,7 @@ header h1 { font-size: 34px; }
     overflow: auto;
   }
   #layers button { white-space: nowrap; }
-  #reader {
+  #reader, #saved {
     top: auto;
     left: 12px;
     right: 12px;

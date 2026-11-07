@@ -34,7 +34,10 @@
       </form>
       <nav id="layers" aria-label="Lands"></nav>
       <aside id="reader" hidden>
-        <button id="reader-close" type="button">Close</button>
+        <div id="reader-actions">
+          <button id="save-word" type="button" aria-pressed="false">Save</button>
+          <button id="reader-close" type="button">Close</button>
+        </div>
         <p id="reader-kicker" class="eyebrow"></p>
         <h2 id="reader-word"></h2>
         <p id="reader-pos"></p>
@@ -43,10 +46,20 @@
         <p id="reader-note" hidden></p>
         <p id="reader-source"></p>
       </aside>
+      <aside id="saved" hidden>
+        <div id="saved-bar">
+          <p class="eyebrow">Saved words</p>
+          <button id="saved-close" type="button">Close</button>
+        </div>
+        <p id="saved-empty">No saved words yet. Open a word and choose Save.</p>
+        <ul id="saved-list"></ul>
+        <button id="saved-export" type="button">Export saved words</button>
+      </aside>
       <div id="tools">
         <button id="import-button" type="button">Import</button>
         <button id="sample-button" type="button">Add 3 of mine</button>
         <button id="download-button" type="button">Download</button>
+        <button id="saved-button" type="button" aria-expanded="false">Saved <span id="saved-count">0</span></button>
         <button id="restore-button" type="button">Restore test world</button>
         <input id="import-file" type="file" accept=".json,.csv,application/json,text/csv" hidden />
         <p id="status" role="status"></p>

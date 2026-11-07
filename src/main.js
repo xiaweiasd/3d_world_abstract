@@ -1,5 +1,6 @@
 import "./style.css";
 import { LAYERS, layerById, mergeRecords, parseImport, sourceLabel } from "./records.js";
+import { exportSaved, isSaved, loadSaved, toggleSaved, writeSaved } from "./saved.js";
 import { EnglishWorld } from "./world.js";
 
 const loading = document.querySelector("#loading");
@@ -15,6 +16,7 @@ const status = document.querySelector("#status");
 const importFile = document.querySelector("#import-file");
 
 let entries = [];
+let saved = [];
 let world;
 
 boot().catch((error) => {
@@ -28,8 +30,10 @@ async function boot() {
   world = new EnglishWorld(document.querySelector("#scene"), document.querySelector("#labels"));
   world.setEntries(entries);
   world.onSelect = showEntry;
+  saved = loadSaved(localStorage);
   renderCensus();
   renderLayers();
+  renderSaved();
   loading.classList.add("done");
   bind(original);
 }
@@ -38,6 +42,43 @@ function bind(original) {
 
 document.querySelector("#reader-close").addEventListener("click", () => {
   reader.hidden = true;
+});
+
+document.querySelector("#save-word").addEventListener("click", () => {
+  const word = document.querySelector("#reader-word").textContent;
+  const entry = entries.find((item) => item.word.toLowerCase() === word.toLowerCase())
+    || saved.find((item) => item.word.toLowerCase() === word.toLowerCase());
+  if (!entry) return;
+  saved = toggleSaved(saved, entry);
+  try {
+    writeSaved(localStorage, saved);
+  } catch {
+    setStatus("This browser could not store the saved word.");
+    saved = loadSaved(localStorage);
+  }
+  renderSaved();
+  updateSaveButton(word);
+  setStatus(isSaved(saved, word) ? `Saved ${word}.` : `Removed ${word} from saved words.`);
+});
+
+document.querySelector("#saved-button").addEventListener("click", () => {
+  const panel = document.querySelector("#saved");
+  panel.hidden = !panel.hidden;
+  document.querySelector("#saved-button").setAttribute("aria-expanded", String(!panel.hidden));
+});
+
+document.querySelector("#saved-close").addEventListener("click", () => {
+  document.querySelector("#saved").hidden = true;
+  document.querySelector("#saved-button").setAttribute("aria-expanded", "false");
+});
+
+document.querySelector("#saved-export").addEventListener("click", () => {
+  if (!saved.length) {
+    setStatus("No saved words to export.");
+    return;
+  }
+  download("saved-words.json", exportSaved(saved));
+  setStatus(`Exported ${saved.length.toLocaleString("en")} saved words.`);
 });
 
 searchForm.addEventListener("submit", (event) => {
@@ -74,13 +115,7 @@ document.querySelector("#sample-button").addEventListener("click", async () => {
 });
 
 document.querySelector("#download-button").addEventListener("click", () => {
-  const blob = new Blob([JSON.stringify(entries, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "english-world.json";
-  link.click();
-  URL.revokeObjectURL(url);
+  download("english-world.json", entries);
   setStatus(`Downloaded ${entries.length.toLocaleString("en")} records.`);
 });
 
@@ -138,7 +173,57 @@ function showEntry(entry) {
   note.textContent = entry.note;
   const rank = entry.rank ? ` Frequency rank ${entry.rank.toLocaleString("en")} in the test list.` : "";
   document.querySelector("#reader-source").textContent = `${sourceLabel(entry)}${rank}`;
+  updateSaveButton(entry.word);
   reader.hidden = false;
+}
+
+function updateSaveButton(word) {
+  const button = document.querySelector("#save-word");
+  const on = isSaved(saved, word);
+  button.setAttribute("aria-pressed", String(on));
+  button.textContent = on ? "Saved" : "Save";
+}
+
+function renderSaved() {
+  document.querySelector("#saved-count").textContent = saved.length.toLocaleString("en");
+  const list = document.querySelector("#saved-list");
+  const empty = document.querySelector("#saved-empty");
+  empty.hidden = saved.length > 0;
+  list.replaceChildren(...saved.map((item) => {
+    const row = document.createElement("li");
+    const open = document.createElement("button");
+    open.type = "button";
+    open.className = "open-saved";
+    open.textContent = item.word;
+    open.addEventListener("click", () => openSaved(item));
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.textContent = "Remove";
+    remove.addEventListener("click", () => {
+      saved = toggleSaved(saved, item);
+      writeSaved(localStorage, saved);
+      renderSaved();
+      updateSaveButton(document.querySelector("#reader-word").textContent);
+      setStatus(`Removed ${item.word} from saved words.`);
+    });
+    row.append(open, remove);
+    return row;
+  }));
+}
+
+function openSaved(item) {
+  const live = entries.find((entry) => entry.word.toLowerCase() === item.word.toLowerCase());
+  if (live) {
+    choose(live);
+    return;
+  }
+  showEntry({
+    ...item,
+    source: "imported",
+    rank: null,
+    sample: false,
+    id: item.word,
+  });
 }
 
 function renderCensus() {
@@ -200,6 +285,16 @@ function applyImport(text, name) {
 
 function setStatus(message) {
   status.textContent = message;
+}
+
+function download(filename, data) {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(url);
 }
 
 async function loadLexicon() {

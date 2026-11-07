@@ -26,6 +26,10 @@ Open the address Vite prints. `npm test` checks the lexicon and the import rules
 
 Drag to look. WASD moves. Q rises, E falls, Shift is faster. Click a word to read it. The round map at the lower right jumps you across the water. Search flies to a word.
 
+## Saved words
+
+On an open word, choose **Save**. The collection stays in this browser’s localStorage. **Saved** lists them. **Export saved words** downloads `saved-words.json`, in the same shape as an import. Saving the word again, or choosing **Remove**, takes it out.
+
 ## Import
 
 Choose **Import**, or drop a `.json` or `.csv` file on the window. A missing land becomes Faint concepts. Unknown land names are skipped.
