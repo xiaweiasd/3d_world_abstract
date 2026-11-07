@@ -1,0 +1,26 @@
+[
+  {
+    "word": "afterlight",
+    "layer": "faint-concept",
+    "pos": "noun",
+    "gloss": "The brightness that stays in a room after the lamp is out.",
+    "example": "We spoke in the afterlight.",
+    "note": "A faint concept of your own. Import more like this."
+  },
+  {
+    "word": "redthread",
+    "layer": "private-symbol",
+    "pos": "noun",
+    "gloss": "A mark for the sentence you will return to.",
+    "example": "She left a redthread on the page.",
+    "note": "A private symbol. You do not have to explain it."
+  },
+  {
+    "word": "held-pause",
+    "layer": "unspoken-framework",
+    "pos": "noun",
+    "gloss": "The structure of a silence that still belongs to the sentence.",
+    "example": "The held-pause did more than the answer.",
+    "note": "An unspoken framework. It works even if you never name it."
+  }
+]
